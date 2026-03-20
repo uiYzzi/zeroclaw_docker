@@ -1,4 +1,15 @@
-FROM sipeed/picoclaw:launcher
+FROM ghcr.io/zeroclaw-labs/zeroclaw:debian
 
-# Install common utilities and nodejs
-RUN apk add --no-cache bash git github-cli nodejs npm
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    gh \
+    curl \
+    ca-certificates \
+    && curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+USER 65534:65534
